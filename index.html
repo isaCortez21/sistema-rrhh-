@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RH Gestión | Innomotics Chile</title>
+
+  <!-- Iconos (Tabler Icons) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+  <!-- Estilos propios -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ===================== LOGIN ===================== -->
+  <section id="loginView" class="login-view">
+    <form id="loginForm" class="login-card">
+      <div class="brand"><i class="ti ti-users-group"></i> RH<span>Gestión</span></div>
+      <h1>Acceso al sistema</h1>
+      <p class="muted">Gestión centralizada de Recursos Humanos.</p>
+
+      <label class="field">
+        <span>Correo electrónico</span>
+        <input id="loginEmail" type="email" required autocomplete="username">
+      </label>
+      <label class="field">
+        <span>Contraseña</span>
+        <input id="loginPassword" type="password" required autocomplete="current-password">
+      </label>
+
+      <button class="btn btn-primary btn-block" type="submit">
+        <i class="ti ti-login"></i> Iniciar sesión
+      </button>
+      <p id="loginMessage" class="message"></p>
+    </form>
+  </section>
+
+  <!-- ===================== APLICACIÓN ===================== -->
+  <div id="appView" class="app-shell hidden">
+
+    <!-- Menú lateral -->
+    <aside id="sidebar" class="sidebar">
+      <div class="brand"><i class="ti ti-users-group"></i> RH<span>Gestión</span></div>
+
+      <div class="sidebar-user">
+        <i class="ti ti-user-circle"></i>
+        <div>
+          <strong id="userName">Usuario</strong>
+          <small id="userRole">Sin rol</small>
+        </div>
+      </div>
+
+      <nav id="mainNav" class="main-nav"></nav>
+
+      <button id="logoutButton" class="btn btn-outline btn-block">
+        <i class="ti ti-logout"></i> Cerrar sesión
+      </button>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <header class="topbar">
+        <button id="menuToggle" class="btn btn-icon menu-toggle" title="Menú">
+          <i class="ti ti-menu-2"></i>
+        </button>
+        <div class="topbar-title">
+          <p class="eyebrow">INNOMOTICS CHILE</p>
+          <h1 id="pageTitle">Panel principal</h1>
+        </div>
+        <button id="refreshCurrent" class="btn btn-light">
+          <i class="ti ti-refresh"></i> Actualizar
+        </button>
+      </header>
+
+      <section id="dashboardPanel" class="view-panel hidden"></section>
+      <section id="crudPanel" class="view-panel hidden"></section>
+      <section id="auditoriaPanel" class="view-panel hidden"></section>
+    </main>
+  </div>
+
+  <!-- Ventanas modales y notificaciones -->
+  <div id="modalRoot"></div>
+  <div id="toastRoot" class="toast-root"></div>
+
+  <!-- Librerías externas -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
+  <!-- Aplicación -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

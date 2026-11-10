@@ -1,0 +1,138 @@
+
+Table departamento {
+  id_departamento integer [pk, increment]
+  nombre varchar [not null, unique]
+  descripcion text
+  estado varchar [default: 'Activo', note: 'Activo | Inactivo']
+}
+
+Table cargo {
+  id_cargo integer [pk, increment]
+  nombre varchar [not null, unique]
+  descripcion text
+  estado varchar [default: 'Activo']
+}
+
+Table trabajador {
+  id_trabajador integer [pk, increment]
+  rut varchar [not null, unique]
+  nombres varchar [not null]
+  apellidos varchar [not null]
+  correo_personal varchar
+  correo_corporativo varchar
+  telefono varchar
+  fecha_nacimiento date
+  fecha_ingreso date [not null]
+  direccion varchar
+  comuna varchar
+  region varchar
+  estado_laboral varchar [not null, default: 'Activo', note: 'Activo | Inactivo | Desvinculado']
+  fecha_salida date
+}
+
+Table contrato {
+  id_contrato integer [pk, increment]
+  id_trabajador integer [not null, ref: > trabajador.id_trabajador]
+  id_departamento integer [not null, ref: > departamento.id_departamento]
+  id_cargo integer [not null, ref: > cargo.id_cargo]
+  tipo_contrato varchar
+  sueldo_base numeric
+  estado_contrato varchar [default: 'Vigente']
+  fecha_inicio date
+  fecha_termino date
+}
+
+Table anexo_contrato {
+  id_anexo integer [pk, increment]
+  id_contrato integer [not null, ref: > contrato.id_contrato]
+  numero_anexo integer
+  tipo_modificacion varchar
+  sueldo_nuevo numeric
+  estado varchar [default: 'Vigente']
+}
+
+Table asistencia_diaria {
+  id_asistencia integer [pk, increment]
+  id_trabajador integer [not null, ref: > trabajador.id_trabajador]
+  fecha date [not null]
+  horas_trabajadas numeric
+  estado varchar [default: 'Presente']
+  indexes { (id_trabajador, fecha) [unique] }
+}
+
+Table movimiento_vacaciones {
+  id_movimiento integer [pk, increment]
+  id_trabajador integer [not null, ref: > trabajador.id_trabajador]
+  fecha_movimiento date [not null]
+  tipo_movimiento varchar
+  dias numeric [not null, default: 1]
+  descripcion text
+}
+
+Table saldo_vacaciones {
+  id_saldo integer [pk, increment]
+  id_trabajador integer [not null, unique, ref: - trabajador.id_trabajador]
+  dias_disponibles numeric
+  dias_tomados numeric
+}
+
+Table concepto_remuneracion {
+  id_concepto integer [pk, increment]
+  nombre varchar [not null]
+  tipo_concepto varchar [note: 'Haber | Descuento']
+  descripcion text
+  estado varchar [default: 'Activo']
+}
+
+Table liquidacion {
+  id_liquidacion integer [pk, increment]
+  id_trabajador integer [not null, ref: > trabajador.id_trabajador]
+  id_contrato integer [not null, ref: > contrato.id_contrato]
+  periodo varchar [note: 'AAAA-MM']
+  fecha_pago date
+  sueldo_base numeric
+  sueldo_liquido numeric
+}
+
+Table detalle_liquidacion {
+  id_detalle integer [pk, increment]
+  id_liquidacion integer [not null, ref: > liquidacion.id_liquidacion]
+  id_concepto integer [not null, ref: > concepto_remuneracion.id_concepto]
+  monto numeric [not null]
+}
+
+Table rol {
+  id_rol integer [pk, increment]
+  nombre varchar [not null, unique]
+  descripcion text
+}
+
+Table permiso {
+  id_permiso integer [pk, increment]
+  nombre varchar [not null, unique]
+  descripcion text
+}
+
+Table rol_permiso {
+  id_rol_permiso integer [pk, increment]
+  id_rol integer [not null, ref: > rol.id_rol]
+  id_permiso integer [not null, ref: > permiso.id_permiso]
+  indexes { (id_rol, id_permiso) [unique] }
+}
+
+Table usuario {
+  id_usuario integer [pk, increment]
+  nombre_usuario varchar
+  correo varchar [unique]
+  estado varchar [default: 'Activo']
+  id_trabajador integer [ref: > trabajador.id_trabajador]
+  id_rol integer [ref: > rol.id_rol]
+}
+
+Table auditoria {
+  id_auditoria integer [pk, increment]
+  id_usuario integer [ref: > usuario.id_usuario]
+  accion varchar [not null]
+  tabla_afectada varchar [not null]
+  fecha_registro timestamp [default: `now()`]
+}
